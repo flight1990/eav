@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Guest\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::inertia('/', 'Welcome');
+
+Route::name('guest.')->group(function () {
+    Route::controller(CatalogController::class)->name('catalog.')->prefix('catalog')->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
+});
