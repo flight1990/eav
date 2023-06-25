@@ -24,16 +24,36 @@ class CatalogController extends Controller
                         $q->whereIn('slug', $request->input('filters.brands'));
                     });
                 })
+                ->when(request()->has('filters.attributes'), function ($products) {
 
-                ->when(request()->has('filters.attributes'), function ($q) {
-                    foreach (request('filters.attributes') as $attributeID => $valuesIDS) {
-                        $q->whereNotNull('attributes->'.$attributeID)->where(function ($q) use ($attributeID, $valuesIDS) {
-                            foreach ($valuesIDS as $valuesID) {
-                                $q->orWhereJsonContains('attributes->'.$attributeID, $valuesID);
-                            }
-                        });
-                    }
+
+                    $products->whereHas('attributeValues', function ($q) {
+                        foreach (request('filters.attributes') as $attributeID => $valuesIDS) {
+                            $q->where('attribute_values.attribute_id', $attributeID);
+                        }
+                    });
+
+
+
+//                    foreach (request('filters.attributes') as $attributeID => $valuesIDS) {
+//                        $products->whereHas('attributeValues', function ($attributeValues) use ($attributeID, $valuesIDS) {
+//                            $attributeValues->where('attribute_id', $attributeID)->where(function ($q) use ($valuesIDS) {
+//                                $q->whereIn('attribute_values.id', $valuesIDS);
+//                            });
+//                        });
+//                    }
                 })
+
+
+//                ->when(request()->has('filters.attributes'), function ($q) {
+//                    foreach (request('filters.attributes') as $attributeID => $valuesIDS) {
+//                        $q->whereNotNull('attributes->'.$attributeID)->where(function ($q) use ($attributeID, $valuesIDS) {
+//                            foreach ($valuesIDS as $valuesID) {
+//                                $q->orWhereJsonContains('attributes->'.$attributeID, $valuesID);
+//                            }
+//                        });
+//                    }
+//                })
 
 
 //                ->when($request->filled('filters.attributes'), function ($q) use ($request) {

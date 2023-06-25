@@ -17,13 +17,8 @@ class Product extends Model
     protected $fillable = [
         'name',
         'slug',
-        'attributes',
         'category_id',
         'brand_id'
-    ];
-
-    protected $casts = [
-        'attributes' => 'json'
     ];
 
     public function toSearchableArray(): array
