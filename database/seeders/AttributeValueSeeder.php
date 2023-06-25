@@ -15,6 +15,6 @@ class AttributeValueSeeder extends Seeder
      */
     public function run()
     {
-        AttributeValue::factory(10)->create();
+        AttributeValue::factory(5)->create();
     }
 }

@@ -33,8 +33,8 @@
                 <input
                     type="checkbox"
                     :id="`value_${value.id}`"
-                    :value="`${value.attribute.id}-${value.id}`"
-                    v-model="form.filters.attributes"
+                    :value="value.id"
+                    v-model="form.filters.attributes[value.attribute_id]"
                 >
                 <label :for="`value_${value.id}`">{{ value.value }}</label>
             </div>
@@ -92,6 +92,18 @@ export default {
 
             router.get(url, data, options);
         }
+    },
+    mounted() {
+
+        let attributes = {};
+
+        Object.values(this.attributeValues).forEach(values => {
+            values.forEach(i => {
+                attributes[i.attribute_id] = [];
+            })
+        });
+
+        this.form.filters.attributes = this.$page.props.filters.attributes ?? attributes;
     }
 }
 </script>

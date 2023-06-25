@@ -1,5 +1,5 @@
 <template>
-    <h1>Catalog</h1>
+    <h1>Catalog {{ products.meta.total }}</h1>
 
     <div style="display: flex; align-content: center;">
 

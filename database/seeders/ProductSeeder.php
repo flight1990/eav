@@ -16,9 +16,9 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory(10000)
+        Product::factory(5000)
             ->create()->each(function ($product) {
-                $attributeValues = AttributeValue::query()->select('id', 'attribute_id')->inRandomOrder()->limit(rand(2, 5))->get();
+                $attributeValues = AttributeValue::query()->select('id', 'attribute_id')->inRandomOrder()->limit(rand(2, 7))->get();
 
                 $product->attributes = collect($attributeValues)->mapToGroups(function ($item) {
                     return ([$item['attribute_id'] => json_encode($item['id'])]);

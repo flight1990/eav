@@ -24,32 +24,42 @@ class CatalogController extends Controller
                         $q->whereIn('slug', $request->input('filters.brands'));
                     });
                 })
-                ->when($request->filled('filters.attributes'), function ($q) use ($request) {
 
-                    $attributes = [];
-
-                    foreach ($request->input('filters.attributes') as $attributeValue) {
-
-                        $attributeValue = explode('-', $attributeValue);
-                        $attributes[$attributeValue[0]][] = $attributeValue[1];
-
-                        foreach ($attributes as $attributeID => $valuesIDS) {
-                            $q->whereNotNull('attributes->' . $attributeID)->where(function ($q) use ($attributeID, $valuesIDS) {
-                                foreach ($valuesIDS as $valuesID) {
-                                    $q->orWhereJsonContains('attributes->' . $attributeID, $valuesID);
-                                }
-                            });
-                        }
+                ->when(request()->has('filters.attributes'), function ($q) {
+                    foreach (request('filters.attributes') as $attributeID => $valuesIDS) {
+                        $q->whereNotNull('attributes->'.$attributeID)->where(function ($q) use ($attributeID, $valuesIDS) {
+                            foreach ($valuesIDS as $valuesID) {
+                                $q->orWhereJsonContains('attributes->'.$attributeID, $valuesID);
+                            }
+                        });
                     }
                 })
+
+
+//                ->when($request->filled('filters.attributes'), function ($q) use ($request) {
+//
+//                    $attributes = [];
+//
+//                    foreach ($request->input('filters.attributes') as $attributeValue) {
+//                        $attributeValue = explode('-', $attributeValue);
+//                        $attributes[$attributeValue[0]][] = $attributeValue[1];
+//                    }
+//
+//                    foreach ($attributes as $attributeID => $valuesIDS) {
+//                        $q->whereNotNull('attributes->'.$attributeID)->where(function ($q) use ($attributeID, $valuesIDS) {
+//                            foreach ($valuesIDS as $valuesID) {
+//                                $q->orWhereJsonContains('attributes->' . $attributeID, $valuesID);
+//                            }
+//                        });
+//                    }
+//                })
                 ->orderBy('name');
         })
-            ->paginate(50)
+            ->paginate(100)
             ->withQueryString();
 
         $brands = Brand::query()
             ->select(['id', 'name', 'slug'])
-            ->withCount('products')
             ->orderBy('name')
             ->get();
 
@@ -61,7 +71,6 @@ class CatalogController extends Controller
 
         $attributeValues = AttributeValue::query()
             ->with(['attribute'])
-            ->withCount('products')
             ->get();
 
         return inertia('Guest/Catalog/Index', [
