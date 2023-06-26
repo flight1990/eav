@@ -36,7 +36,7 @@
                     :value="value.id"
                     v-model="form.filters.attributes[value.attribute_id]"
                 >
-                <label :for="`value_${value.id}`">{{ value.value }}</label>
+                <label :for="`value_${value.id}`">{{ value.value }}   [attribute: {{ value.attribute_id }} value: {{ value.id }}]  </label>
             </div>
 
         </div>

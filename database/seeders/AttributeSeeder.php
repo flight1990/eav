@@ -17,7 +17,7 @@ class AttributeSeeder extends Seeder
     public function run()
     {
         Attribute::factory(10)
-            ->has(AttributeValue::factory(5))
+            ->has(AttributeValue::factory(50))
             ->create();
     }
 }
