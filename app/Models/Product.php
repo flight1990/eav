@@ -5,30 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Laravel\Scout\Searchable;
-use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
-use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
 
 class Product extends Model
 {
-    use HasFactory, HasSlug, Searchable, HasJsonRelationships;
+    use HasFactory, HasSlug, Searchable;
 
     protected $fillable = [
         'name',
         'slug',
-        'attributes',
-        'options',
         'category_id',
         'brand_id'
-    ];
-
-    protected $casts = [
-        'attributes' => IdsCasts::class,
-//        'attributes' => 'json',
-        'options' => 'json',
     ];
 
     public function toSearchableArray(): array
@@ -55,8 +45,8 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function attributeValues(): BelongsToJson
+    public function attributeValues(): BelongsToMany
     {
-        return $this->belongsToJson(AttributeValue::class, 'options');
+        return $this->belongsToMany(AttributeValue::class);
     }
 }

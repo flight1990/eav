@@ -16,19 +16,10 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory(50000)
+        Product::factory(10000)
             ->create()->each(function ($product) {
-                $attributeValues = AttributeValue::query()->select('id', 'attribute_id')->inRandomOrder()->limit(rand(2, 7))->get();
-
-                $attributeValuesIDS = $attributeValues->pluck('id')->toArray();
-
-                $product->attributes = collect($attributeValues)->mapToGroups(function ($item) {
-                    return ([$item['attribute_id'] => json_encode($item['id'])]);
-                })->toArray();
-
-                $product->save();
-
-                $product->attributeValues()->sync($attributeValuesIDS)->save();
+                $attributeValues = AttributeValue::query()->select('id', 'attribute_id')->inRandomOrder()->limit(rand(2, 7))->pluck('id')->toArray();
+                $product->attributeValues()->attach($attributeValues);
             });
     }
 }

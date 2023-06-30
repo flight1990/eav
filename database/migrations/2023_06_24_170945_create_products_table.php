@@ -11,14 +11,12 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
             $table->string('slug')->unique();
-            $table->json('attributes')->nullable();
-            $table->json('options')->nullable();
             $table->foreignId('category_id')->constrained();
             $table->foreignId('brand_id')->constrained();
             $table->timestamps();
@@ -30,7 +28,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('products');
     }

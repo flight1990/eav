@@ -1,5 +1,5 @@
 <template>
-    <h1>Catalog {{ products.meta.total }}</h1>
+    <h1>Catalog {{ products.meta?.total }}</h1>
 
     <div style="display: flex; align-content: center;">
 
@@ -10,7 +10,7 @@
             />
         </div>
 
-        <div v-if="products.data.length">
+        <div v-if="products.data?.length">
             <ProductComponent
                 v-for="(product, index) in products.data"
                 :key="index"
@@ -18,6 +18,7 @@
             />
 
             <PaginationComponent
+                v-if="products.meta"
                 :links="products.meta?.links"
             />
 

@@ -36,7 +36,7 @@
                     :value="value.id"
                     v-model="form.filters.attributes[value.attribute_id]"
                 >
-                <label :for="`value_${value.id}`">{{ value.value }}   [attribute: {{ value.attribute_id }} value: {{ value.id }}]  </label>
+                <label :for="`value_${value.id}`">{{ value.value }}</label>
             </div>
 
         </div>
@@ -87,7 +87,8 @@ export default {
 
             const options = {
                 preserveScroll: true,
-                preserveState: true
+                preserveState: true,
+                only: ['products', 'filters']
             };
 
             router.get(url, data, options);
