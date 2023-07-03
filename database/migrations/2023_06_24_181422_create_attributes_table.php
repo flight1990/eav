@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->index();
+            $table->string('name');
         });
     }
 
